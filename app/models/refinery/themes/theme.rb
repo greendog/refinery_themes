@@ -51,11 +51,11 @@ module Refinery
         end
 
         def layouts
-          layouts_list(theme_path.join("views/layouts", "*.liquid"))
+          layouts_list(theme_path.join("views/layouts/", "**/*.liquid"))
         end
 
         def templates
-          templates_list(theme_path.join("views/refinery/pages/", "*.liquid"))
+          templates_list(theme_path.join("views/refinery/pages/", "**/*.liquid"))
         end
 
         private
@@ -68,7 +68,8 @@ module Refinery
 
         def templates_list(path)
           Dir.glob(path).collect { |file|
-            file.split("/").last.gsub(/.liquid/, "")
+            file =~ /.*refinery\/pages\/(.*\.liquid)/
+            $1
           }
         end
 
