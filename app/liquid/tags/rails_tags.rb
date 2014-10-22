@@ -179,3 +179,33 @@ end
 
 Liquid::Template.register_tag('in_groups_of', InGroupsOf)
 ########################################################################################################################
+
+class RenderErb < Liquid::Tag
+# example usage:
+#  {% render_erb path:'refinery/bootstrap/navbar' param1:val1 param2:val2 %}
+
+  def initialize(tag_name, markup, tokens)
+    unless markup.empty?
+      @attributes = {}
+      markup.scan(Liquid::TagAttributes) do |key, value|
+        @attributes[key] = value
+      end
+    end
+    super
+  end
+
+  def render(context)
+    return unless @attributes.has_key? 'path' or !@attributes['path'].empty?
+
+    path = @attributes.shift[1]
+    args = {}
+    @attributes.each do |key, value|
+      args[key] = resolve_value(value, context)
+   end
+
+    @result = context.registers[:action_view].render path, :locals => args
+  end
+end
+
+Liquid::Template.register_tag('render_erb', RenderErb)
+########################################################################################################################
