@@ -37,12 +37,12 @@ module Refinery
       end
 
       initializer "register refinery_themes plugin" do
-        Refinery::Plugin.register do |plugin|
-          plugin.name = "refinery_themes"
-          plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.themes_admin_themes_path }
-          plugin.pathname = root
-          plugin.menu_match = /refinery\/themes\/?(settings|editor|upload)?/
-        end
+        #Refinery::Plugin.register do |plugin|
+        #  plugin.name = "refinery_themes"
+        #  plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.themes_admin_themes_path }
+        #  plugin.pathname = root
+        #  plugin.menu_match = /refinery\/themes\/?(settings|editor|upload)?/
+        #end
       end
 
       config.after_initialize do
