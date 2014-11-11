@@ -70,9 +70,7 @@ class TagBuilder < Liquid::Tag
   end
 
   def render(context)
-    if @attributes.has_key?('html')
-      @attributes['html'] = eval(@attributes['html'].chomp('"').reverse.chomp('"').reverse)
-    end
+    @attributes['html'] = eval(@attributes['html'].chomp('"').reverse.chomp('"').reverse) if @attributes.has_key?('html')
     @result = context['form'].send(@attributes['tag'].to_sym, @attributes.except('tag'))
     super(context)
   end
@@ -149,14 +147,16 @@ Liquid::Template.register_tag('url_helper', UrlHelper)
 ########################################################################################################################
 class InGroupsOf < Liquid::Tag
 # example usage:
-#  {% capture_variable products %}{% get_products per_page:50 %}{% endcapture_variable %}
-#  {% capture_variable products_groups %}{% in_groups_of collection:products, count:5 %}{% endcapture_variable %}
-#  {% for group in products_groups %}
-#    {% for product in group %}
-#      <li class="product-item">{{ product.name }}</li>
-#    {% endfor %}
-#    <li class="line_divider"></li>
-#  {% endfor %}
+=begin
+{% capture_variable products %}{% get_products per_page:50 %}{% endcapture_variable %}
+{% capture_variable products_groups %}{% in_groups_of collection:products, count:5 %}{% endcapture_variable %}
+{% for group in products_groups %}
+   {% for product in group %}
+     <li class="product-item">{{ product.name }}</li>
+   {% endfor %}
+   <li class="line_divider"></li>
+{% endfor %}
+=end
 
   def initialize(tag_name, markup, tokens)
     unless markup.empty?

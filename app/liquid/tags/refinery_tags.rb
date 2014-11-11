@@ -148,3 +148,25 @@ class NewsItemArchive < Liquid::Tag
 end
 
 Liquid::Template.register_tag('news_item_archive_widget', NewsItemArchive)
+
+
+################################################################################################################################
+
+class RefinerySettings < Liquid::Tag
+
+  def initialize(tag_name, markup, tokens)
+    unless markup.empty?
+      @attributes = {}
+      markup.scan(Liquid::TagAttributes) do |key, value|
+        @attributes[key] = value
+      end
+    end
+    super
+  end
+
+  def render(context)
+    ::Refinery::Setting.get(@attributes['key'])
+  end
+end
+
+Liquid::Template.register_tag('settings', RefinerySettings)
